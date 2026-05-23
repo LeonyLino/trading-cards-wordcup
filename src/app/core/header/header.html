@@ -1,0 +1,33 @@
+<div class="album-header">
+
+    <div class="header-content container">
+
+        <!-- Foto -->
+        <div class="avatar-wrapper">
+            <img src="https://res.cloudinary.com/dmdqo7ill/image/upload/v1779228624/lorenzzo-copa_sqindw.jpg"
+                class="avatar">
+        </div>
+
+        <!-- Info -->
+        <div class="user-info">
+
+            <h2>{{ username }}</h2>
+
+            <p class="team">
+                <img [src]="'https://flagcdn.com/w40/' + countryCode.toLowerCase() + '.png'" class="flag">
+                {{ team }}
+            </p>
+
+            <!-- Progresso -->
+            <div class="progress mt-2">
+                <div class="progress-bar bg-success" [style.width.%]="progress">
+                </div>
+            </div>
+
+            <small>{{ owned }} / {{ total }} figurinhas</small>
+
+        </div>
+
+    </div>
+
+</div>

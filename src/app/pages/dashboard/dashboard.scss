@@ -1,0 +1,53 @@
+.sticker-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 8px;
+  text-align: center;
+  transition: 0.2s;
+  border: 2px solid #eee;
+}
+
+.sticker-card img {
+  width: 100%;
+  border-radius: 10px;
+  border: 3px solid white;
+}
+
+/* Nome */
+.player {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.team {
+  font-size: 0.7rem;
+  color: gray;
+}
+
+/* Estados */
+.sticker-card.owned {
+  border-color: #28a745;
+}
+
+.sticker-card.repeated {
+  border-color: #ffc107;
+  background: #fff8e1;
+}
+
+/* Ações */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.team {
+  font-size: 0.7rem;
+  color: gray;
+}
+
+.badge {
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+}

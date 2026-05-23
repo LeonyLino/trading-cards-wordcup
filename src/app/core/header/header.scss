@@ -1,0 +1,68 @@
+.album-header {
+  background: linear-gradient(135deg, #0f9b8e, #1e3c72);
+  padding: 40px 0;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+/* efeito de fundo suave */
+.album-header::after {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 10%);
+  background-size: 20px 20px;
+  top: -50%;
+  left: -50%;
+  opacity: 0.2;
+}
+
+/* layout */
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* foto */
+.avatar-wrapper {
+  background: white;
+  padding: 5px;
+  border-radius: 15px;
+}
+
+.avatar {
+  width: 120px;
+  border-radius: 12px;
+}
+
+/* info */
+.user-info h2 {
+  margin: 0;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.flag {
+  width: 20px;
+  border-radius: 2px;
+}
+
+/* progresso */
+.progress {
+  height: 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.3);
+}
+
+.progress-bar {
+  transition: 0.3s;
+}

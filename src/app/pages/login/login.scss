@@ -1,0 +1,45 @@
+.login-container {
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #0f9b8e, #1e3c72);
+  overflow: hidden; /* garante que nunca tenha scroll */
+}
+
+.login-card {
+  width: 100%;
+  max-width: 480px; /* AQUI aumentamos */
+  border-radius: 20px;
+  border: none;
+  background: #ffffff;
+  
+  /* controla altura sem estourar tela */
+  max-height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+.card-body {
+  width: 100%;
+  padding: 2.5rem; /* mais espaçamento interno */
+}
+
+h3 {
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
+input {
+  border-radius: 10px;
+  padding: 12px;
+}
+
+button {
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 12px;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.02);
+}

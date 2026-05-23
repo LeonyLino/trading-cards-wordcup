@@ -1,0 +1,63 @@
+<div class="container py-4">
+
+    <h2 class="mb-4 text-center">🏆 Meu Álbum</h2>
+
+    <!-- Contadores -->
+    <div class="text-center mb-3">
+        ✔ {{ getOwnedCount() }} |
+        🔁 {{ getRepeatedCount() }} |
+        ❌ {{ getMissingCount() }}
+    </div>
+
+    <!-- Filtros -->
+    <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
+        <button class="btn btn-outline-primary" (click)="filter = 'ALL'">Todas</button>
+        <button class="btn btn-outline-success" (click)="filter = 'OWNED'">Tenho</button>
+        <button class="btn btn-outline-warning" (click)="filter = 'REPEATED'">Repetidas</button>
+        <button class="btn btn-outline-danger" (click)="filter = 'MISSING'">Faltantes</button>
+    </div>
+
+    <!-- Grid -->
+    <div class="row g-3">
+
+        <div class="col-6 col-md-3 col-lg-2" *ngFor="let sticker of filteredStickers()">
+
+            <div class="sticker-card" [ngClass]="{
+             'owned': sticker.owned,
+             'repeated': sticker.repeated
+           }">
+
+                <img [src]="sticker.imageUrl" alt="sticker">
+
+                <div class="sticker-info">
+                    <strong>#{{ sticker.number }}</strong>
+
+                    <div class="player">{{ sticker.playerName }}</div>
+                    
+                    <div class="team">
+                        <span class="badge bg-dark me-1">
+                            {{ sticker.countryCode }}
+                        </span>
+                        {{ sticker.team }}
+                    </div>
+                </div>
+
+                <!-- Ações -->
+                <div class="actions">
+
+                    <button class="btn btn-sm btn-success" (click)="toggleOwned(sticker)">
+                        ✔
+                    </button>
+
+                    <button class="btn btn-sm btn-warning" (click)="toggleRepeated(sticker)">
+                        🔁
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,159 @@
+<div class="container py-4">
+
+  <!-- 👤 Header do usuário -->
+  <div class="profile-header text-center mb-4">
+    <h2>📖 Álbum de {{ username }}</h2>
+
+    <p class="text-muted">
+      {{ getOwnedCount() }} / {{ totalStickers }} figurinhas
+    </p>
+
+    <div class="progress mb-2">
+      <div class="progress-bar bg-success" [style.width.%]="getProgress()">
+      </div>
+    </div>
+  </div>
+
+  <!-- 🧠 Resumo -->
+  <div class="row text-center mb-4">
+
+    <div class="col">
+      <div class="card p-2 shadow-sm">
+        ✔ <strong>{{ getOwnedCount() }}</strong><br>
+        Tenho
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card p-2 shadow-sm">
+        🔁 <strong>{{ getRepeatedCount() }}</strong><br>
+        Troca
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card p-2 shadow-sm">
+        ❌ <strong>{{ getMissingCount() }}</strong><br>
+        Faltam
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 🔁 PARA TROCA -->
+  <h4 class="mb-3">🔁 Disponíveis para troca</h4>
+
+  <div class="row g-3 mb-5">
+    <div class="col-4 col-md-2" *ngFor="let sticker of getTradeStickers()">
+
+      <div class="sticker-card trade selectable" [class.selected]="isTradeSelected(sticker)"
+        (click)="toggleTradeSelection(sticker)">
+
+        <input type="checkbox" class="form-check-input checkbox" [checked]="isTradeSelected(sticker)"
+          (click)="$event.stopPropagation()" (change)="toggleTradeSelection(sticker)">
+
+        <img [src]="sticker.imageUrl">
+
+        <small>#{{ sticker.number }}</small>
+        <small>{{ sticker.playerName }}</small>
+        <small>({{ sticker.acronym }})</small>
+      </div>
+
+    </div>
+    <div class="text-center mb-4">
+      <button class="btn btn-success" [disabled]="selectedToTrade.length === 0" (click)="openTradeModalMultiple()">
+
+        🔁 Propor troca ({{ selectedToTrade.length }})
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ❌ FALTANTES -->
+  <h4 class="mb-3">❌ Faltantes</h4>
+
+  <div class="row g-3 mb-5">
+    <div class="col-4 col-md-2" *ngFor="let sticker of getMissingStickers()">
+
+      <div class="sticker-card trade">
+        <img [src]="sticker.imageUrl">
+
+        <small>#{{ sticker.number }}</small>
+        <small>#{{ sticker.playerName }}</small>
+        <small>({{ sticker.acronym }})</small>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 🔁 MODAL DE TROCA -->
+<div class="modal fade" id="tradeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">🔁 Propor troca</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Figurinha desejada -->
+        <div class="text-center mb-3">
+          <strong>Figurinha(s) desejada:</strong>
+
+          <div class="sticker-grid mt-3">
+
+            <div class="sticker-card" *ngFor="let sticker of selectedToTrade">
+
+              <img [src]="sticker.imageUrl">
+
+              <small>#{{ sticker.number }}</small>
+              <small>{{ sticker.playerName }}</small>
+              <small>({{ sticker.acronym }})</small>
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Figurinhas que ele pode oferecer -->
+        <div>
+          <strong>Escolha o que você pode oferecer:</strong>
+
+          <div class="sticker-grid mt-3">
+
+            <div class="sticker-card trade selectable" *ngFor="let sticker of getMissingStickers()"
+              (click)="toggleOfferSelection(sticker)" [class.selected]="isOfferSelected(sticker)">
+
+              <!-- checkbox -->
+              <input type="checkbox" class="form-check-input checkbox" [checked]="isOfferSelected(sticker)"
+                (click)="$event.stopPropagation()" (change)="toggleOfferSelection(sticker)">
+
+              <img [src]="sticker.imageUrl">
+
+              <small>#{{ sticker.number }}</small>
+              <small>{{ sticker.playerName }}</small>
+              <small>({{ sticker.acronym }})</small>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+
+        <button class="btn btn-success" (click)="submitTrade()">
+          Propor troca
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

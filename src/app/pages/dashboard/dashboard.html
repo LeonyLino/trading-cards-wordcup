@@ -27,18 +27,19 @@
              'repeated': sticker.repeated
            }">
 
-                <img [src]="sticker.imageUrl" alt="sticker">
+                <img [src]="sticker.imageUrl == '' ? 'https://res.cloudinary.com/dmdqo7ill/image/upload/v1779831050/34692690-386f-4268-89cf-0a8271ae3265.png' : sticker.imageUrl"
+                    alt="sticker">
 
                 <div class="sticker-info">
-                    <strong>#{{ sticker.number }}</strong>
+                    <strong>👕{{ sticker.code }}</strong>
 
-                    <div class="player">{{ sticker.playerName }}</div>
-                    
+                    <div class="player">{{ sticker.name }}</div>
+
                     <div class="team">
                         <span class="badge bg-dark me-1">
-                            {{ sticker.countryCode }}
+                            {{ sticker.code }}
                         </span>
-                        {{ sticker.team }}
+                        {{ sticker.selection }}
                     </div>
                 </div>
 

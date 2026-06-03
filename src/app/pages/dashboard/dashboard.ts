@@ -19,38 +19,7 @@ export class Dashboard {
   }
 
   loadMock() {
-    this.stickers = [
-      {
-        id: 1,
-        playerName: 'Lorenzzo Aciole',
-        team: 'Brasil',
-        countryCode: 'BR',
-        number: '001',
-        imageUrl: 'https://res.cloudinary.com/dmdqo7ill/image/upload/v1779228624/lorenzzo-copa_sqindw.jpg',
-        owned: false,
-        repeated: false
-      },
-      {
-        id: 2,
-        playerName: 'Neymar Jr',
-        team: 'Brasil',
-        countryCode: 'BRA',
-        number: '010',
-        imageUrl: 'https://res.cloudinary.com/dmdqo7ill/image/upload/v1779228624/lorenzzo-copa_sqindw.jpg',
-        owned: true,
-        repeated: false
-      },
-      {
-        id: 3,
-        playerName: 'Messi',
-        team: 'Argentina',
-        countryCode: 'ARG',
-        number: '100',
-        imageUrl: 'https://res.cloudinary.com/dmdqo7ill/image/upload/v1779228624/lorenzzo-copa_sqindw.jpg',
-        owned: true,
-        repeated: true
-      }
-    ];
+    
   }
 
   toggleOwned(sticker: Sticker) {
@@ -88,15 +57,15 @@ export class Dashboard {
     const groups: any = {};
 
     this.stickers.forEach(sticker => {
-      if (!groups[sticker.team]) {
-        groups[sticker.team] = {
+      if (!groups[sticker.selection]) {
+        groups[sticker.selection] = {
           team: sticker.team,
-          countryCode: sticker.countryCode,
+          countryCode: sticker.code,
           stickers: []
         };
       }
 
-      groups[sticker.team].stickers.push(sticker);
+      groups[sticker.selection].stickers.push(sticker);
     });
 
     return Object.values(groups);

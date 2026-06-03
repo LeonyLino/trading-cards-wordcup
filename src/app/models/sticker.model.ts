@@ -1,12 +1,12 @@
 export interface Sticker {
     id: number;
-    playerName: string;
-    team: string;
-    number: string;
+    code: string;
+    name: string;
+    team?: string;
     imageUrl: string;
-    countryCode: string;
-    acronym?: string;
-
+    qtd: number;
+    selection: string;
+    
     owned: boolean;
     repeated: boolean;
 }

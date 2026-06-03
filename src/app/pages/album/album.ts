@@ -3,6 +3,7 @@ import { Sticker } from '../../models/sticker.model';
 import { CommonModule } from '@angular/common';
 import * as bootstrap from 'bootstrap';
 import { Router } from '@angular/router';
+import { CardsService } from '../../services/cards.service';
 
 @Component({
   selector: 'app-album',
@@ -21,60 +22,22 @@ export class Album implements OnInit {
 
   constructor(
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private cardsService: CardsService
   ) { }
 
   ngOnInit() {
-    this.loadMock(); // depois troca por API
+    this.loadMock();
+    console.log('Stickers carregados:', this.stickers);
   }
 
   loadMock() {
-    this.stickers = [
-      {
-        id: 1,
-        playerName: 'Lorenzzo Aciole',
-        team: 'Brasil',
-        countryCode: 'BR',
-        acronym: 'BRA',
-        number: '001',
-        imageUrl: 'https://res.cloudinary.com/dmdqo7ill/image/upload/v1779228624/lorenzzo-copa_sqindw.jpg',
-        owned: false,
-        repeated: false
-      },
-      {
-        id: 2,
-        playerName: 'Neymar Jr',
-        team: 'Brasil',
-        countryCode: 'BR',
-        acronym: 'BRA',
-        number: '010',
-        imageUrl: 'https://res.cloudinary.com/dmdqo7ill/image/upload/v1779228624/lorenzzo-copa_sqindw.jpg',
-        owned: true,
-        repeated: true
-      },
-      {
-        id: 3,
-        playerName: 'Messi',
-        team: 'Argentina',
-        countryCode: 'ARG',
-        acronym: 'ARG',
-        number: '100',
-        imageUrl: 'https://res.cloudinary.com/dmdqo7ill/image/upload/v1779228624/lorenzzo-copa_sqindw.jpg',
-        owned: true,
-        repeated: true
-      },
-      {
-        id: 4,
-        playerName: 'Ronaldo',
-        team: 'Brasil',
-        countryCode: 'BR',
-        acronym: 'BRA',
-        number: '007',
-        imageUrl: 'https://res.cloudinary.com/dmdqo7ill/image/upload/v1779228624/lorenzzo-copa_sqindw.jpg',
-        owned: false,
-        repeated: false
-      }
-    ];
+    this.cardsService.getByOwned().subscribe(data => {
+      this.stickers = data;
+      console.log('Stickers do usuário:', this.stickers);
+    }, error => {
+      console.error('Erro ao carregar stickers:', error);
+    });
   }
 
   getOwnedCount() {

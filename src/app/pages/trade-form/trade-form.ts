@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { ExchangeProposalService } from '../../services/exchange-proposal.service';
 
 @Component({
   selector: 'app-trade-form',
@@ -19,28 +20,60 @@ export class TradeForm {
   name = '';
   phone = '';
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private exchangeProposalService: ExchangeProposalService
+  ) { }
 
   ngOnInit() {
     const nav = history.state;
 
     this.wanted = nav.wanted || [];
     this.offered = nav.offered || [];
+
+    console.log('Dados recebidos no form proposta:', { wanted: this.wanted, offered: this.offered });
   }
 
   submitted = false;
+
+
+  private sendRateToWhatsapp() {
+    const mensagem =
+      `*🔁 Proposta de troca 🔁*
+        Olá, sou ${this.name} e estou interessado em trocar figurinhas do álbum da Copa 2026. 
+        Aqui estão os detalhes da minha proposta:
+        Ofereço: ${this.offered.map(s => `#${s.code} - ${s.name} (${s.selection})`).join(', ')}
+        Por: ${this.wanted.map(s => `#${s.code} - ${s.name} (${s.selection})`).join(', ')}
+        Se estiver interessado, por favor, me avise! Obrigado!`;
+    const numero = '5583987809786';
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+
+    window.open(url, '_blank');
+  }
 
   submit() {
     const payload = {
       name: this.name,
       phone: this.phone,
-      wanted: this.wanted,
-      offered: this.offered
+      wanted: this.wanted.map(item => item.code).join(','),
+      offered: this.offered.map(item => item.code).join(',')
     };
 
     console.log('Proposta final:', payload);
 
+    this.exchangeProposalService.submit(payload).subscribe({
+      next: () => {
+        alert('Proposta enviada com sucesso! Você será redirecionado para o álbum em breve.');
+      },
+      error: err => {
+        console.error('Erro ao enviar proposta:', err);
+        alert('Ocorreu um erro ao enviar sua proposta. Por favor, tente novamente mais tarde.');
+      }
+    });
+
     this.submitted = true;
+
+    this.sendRateToWhatsapp();
 
     // redireciona depois de 3 segundos
     setTimeout(() => {

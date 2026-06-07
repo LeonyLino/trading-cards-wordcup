@@ -7,14 +7,25 @@ import { CardsService } from '../../services/cards.service';
 
 @Component({
   selector: 'app-album',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './album.html',
   styleUrl: './album.scss',
 })
 export class Album implements OnInit {
-  @Input() username: string = 'Lorenzzo Lino';
-  @Input() stickers: Sticker[] = [];
-  totalStickers: number = 980;
+  username: string = 'Lorenzzo Lino';
+
+  stickersNotOwned: Sticker[] = [];
+  currentPageNotOwned: number = 0;
+  totalPagesNotOwned: number = 0;
+  totalStickers: number = 0;
+
+  stickersRepeated: Sticker[] = [];
+  currentPageRepeated: number = 0;
+  totalPagesRepeated: number = 0;
+  totalStickersRepeated: number = 0;
+
+
   selectedToTrade: any[] = [];
 
   selectedOffers: any[] = [];
@@ -27,29 +38,89 @@ export class Album implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadMock();
-    console.log('Stickers carregados:', this.stickers);
+    this.loadDataNotOwned();
+    this.loadDataRepeated();
   }
 
-  loadMock() {
-    this.cardsService.getByOwned().subscribe(data => {
-      this.stickers = data;
-      console.log('Stickers do usuário:', this.stickers);
-    }, error => {
-      console.error('Erro ao carregar stickers:', error);
+  loadCountOwned() {
+    this.cardsService.getCountOwned().subscribe({
+      next: data => {
+        this.totalStickers = data;
+      }
     });
   }
 
-  getOwnedCount() {
-    return this.stickers.filter(s => s.owned).length;
+  loadDataRepeated(page: number = 0) {
+
+    this.cardsService.getByRepeated(page, 24).subscribe({
+      next: data => {
+        console.log('Dados repeated recebidos:', data);
+        this.stickersRepeated = [...this.stickersRepeated, ...data.content];
+        this.currentPageRepeated = data.number;
+        this.totalPagesRepeated = data.totalPages;
+        this.totalStickersRepeated = data.totalElements;
+      },
+      error: err => {
+        console.error('Erro:', err);
+        alert('Erro de conexão. Por favor, tente novamente mais tarde.');
+      }
+    });
+  }
+
+  loadDataNotOwned(page: number = 0) {
+
+    this.cardsService.getAll(page, 24).subscribe({
+      next: data => {
+        console.log('Dados not-owned recebidos:', data);
+        this.stickersNotOwned = data.content;
+        this.currentPageNotOwned = data.number;
+        this.totalPagesNotOwned = data.totalPages;
+        this.totalStickers = data.totalElements;
+      },
+      error: err => {
+        console.error('Erro:', err);
+        alert('Erro de conexão. Por favor, tente novamente mais tarde.');
+
+      },
+      complete: () => {
+        console.log('Finalizado');
+      }
+    });
+  }
+  nextPageNotOwned() {
+    if (this.currentPageNotOwned < this.totalPagesNotOwned - 1) {
+      this.loadDataNotOwned(this.currentPageNotOwned + 1);
+    }
+  }
+
+  previousPageNotOwned() {
+    if (this.currentPageNotOwned > 0) {
+      this.loadDataNotOwned(this.currentPageNotOwned - 1);
+    }
+  }
+
+  nextPageRepeated() {
+    if (this.currentPageRepeated < this.totalPagesRepeated - 1) {
+      this.loadDataRepeated(this.currentPageRepeated + 1);
+    }
+  }
+
+  previousPageRepeated() {
+    if (this.currentPageRepeated > 0) {
+      this.loadDataRepeated(this.currentPageRepeated - 1);
+    }
+  }
+
+  getOwnedCount() { //TODO faltando ajustar para pegar do backend
+    return this.stickersNotOwned.filter(s => s.owned).length;
   }
 
   getRepeatedCount() {
-    return this.stickers.filter(s => s.repeated).length;
+    return this.stickersRepeated.filter(s => s.repeated).length;
   }
 
   getMissingCount() {
-    return this.stickers.filter(s => !s.owned).length;
+    return this.stickersNotOwned.filter(s => !s.owned).length;
   }
 
   getProgress() {
@@ -57,11 +128,11 @@ export class Album implements OnInit {
   }
 
   getTradeStickers() {
-    return this.stickers.filter(s => s.repeated);
+    return this.stickersRepeated.filter(s => s.repeated);
   }
 
   getMissingStickers() {
-    return this.stickers.filter(s => !s.owned);
+    return this.stickersNotOwned.filter(s => !s.owned);
   }
 
   toggleOfferSelection(sticker: any) {

@@ -54,19 +54,40 @@
 
         <img [src]="sticker.imageUrl">
 
-        <small>#{{ sticker.code }}</small>
-        <small>{{ sticker.name }}</small>
-        <small>({{ sticker.selection }})</small>
+        <ul class="sticker-info">
+          <li class="code">👕 {{ sticker.code }}</li>
+          <li class="name">👤 {{ sticker.name }}</li>
+          <li class="selection">🏳️ {{ sticker.selection }}</li>
+        </ul>
+
       </div>
 
     </div>
     <div class="text-center mb-4">
       <button class="btn btn-success" [disabled]="selectedToTrade.length === 0" (click)="openTradeModalMultiple()">
-
         🔁 Propor troca ({{ selectedToTrade.length }})
       </button>
     </div>
   </div>
+  <nav class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPageRepeated === 0">
+        <button class="page-link" (click)="previousPageRepeated()">
+          Anterior
+        </button>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">
+          Página {{ currentPageRepeated + 1 }} de {{ totalPagesRepeated }}
+        </span>
+      </li>
+      <li class="page-item" [class.disabled]="currentPageRepeated === totalPagesRepeated - 1">
+        <button class="page-link" (click)="nextPageRepeated()">
+          Próxima
+        </button>
+      </li>
+    </ul>
+  </nav>
 
 
   <!-- ❌ FALTANTES -->
@@ -78,13 +99,48 @@
       <div class="sticker-card trade">
         <img [src]="sticker.imageUrl">
 
-        <small>#{{ sticker.code }}</small>
-        <small>#{{ sticker.name }}</small>
-        <small>({{ sticker.selection }})</small>
+        <ul class="sticker-info">
+          <li class="code">👕 {{ sticker.code }}</li>
+          <li class="name">👤 {{ sticker.name }}</li>
+          <li class="selection">🏳️ {{ sticker.selection }}</li>
+        </ul>
       </div>
 
     </div>
   </div>
+  <nav class="mt-4">
+    <ul class="pagination justify-content-center">
+
+      <li class="page-item" [class.disabled]="currentPageNotOwned === 0">
+
+        <button class="page-link" (click)="previousPageNotOwned()">
+
+          Anterior
+
+        </button>
+
+      </li>
+
+      <li class="page-item disabled">
+
+        <span class="page-link">
+          Página {{ currentPageNotOwned + 1 }} de {{ totalPagesNotOwned }}
+        </span>
+
+      </li>
+
+      <li class="page-item" [class.disabled]="currentPageNotOwned === totalPagesNotOwned - 1">
+
+        <button class="page-link" (click)="nextPageNotOwned()">
+
+          Próxima
+
+        </button>
+
+      </li>
+
+    </ul>
+  </nav>
 </div>
 
 <!-- 🔁 MODAL DE TROCA -->
@@ -109,9 +165,11 @@
 
               <img [src]="sticker.imageUrl">
 
-              <small>#{{ sticker.code }}</small>
-              <small>{{ sticker.name }}</small>
-              <small>({{ sticker.selection }})</small>
+              <ul class="sticker-info">
+                <li class="code">👕 {{ sticker.code }}</li>
+                <li class="name">👤 {{ sticker.name }}</li>
+                <li class="selection">🏳️ {{ sticker.selection }}</li>
+              </ul>
 
             </div>
 
@@ -133,13 +191,48 @@
 
               <img [src]="sticker.imageUrl">
 
-              <small>#{{ sticker.code }}</small>
-              <small>{{ sticker.name }}</small>
-              <small>({{ sticker.selection }})</small>
+              <ul class="sticker-info">
+                <li class="code">👕 {{ sticker.code }}</li>
+                <li class="name">👤 {{ sticker.name }}</li>
+                <li class="selection">🏳️ {{ sticker.selection }}</li>
+              </ul>
 
             </div>
 
           </div>
+          <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+
+              <li class="page-item" [class.disabled]="currentPageNotOwned === 0">
+
+                <button class="page-link" (click)="previousPageNotOwned()">
+
+                  Anterior
+
+                </button>
+
+              </li>
+
+              <li class="page-item disabled">
+
+                <span class="page-link">
+                  Página {{ currentPageNotOwned + 1 }} de {{ totalPagesNotOwned }}
+                </span>
+
+              </li>
+
+              <li class="page-item" [class.disabled]="currentPageNotOwned === totalPagesNotOwned - 1">
+
+                <button class="page-link" (click)="nextPageNotOwned()">
+
+                  Próxima
+
+                </button>
+
+              </li>
+
+            </ul>
+          </nav>
         </div>
 
       </div>

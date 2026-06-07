@@ -25,7 +25,11 @@
 
             <div class="sticker-card mt-2" *ngFor="let s of wanted">
                 <img [src]="s.imageUrl">
-                <p>#{{ s.number }} - {{ s.playerName }}</p>
+                <ul class="sticker-info">
+                    <li class="code">👕 {{ s.code }}</li>
+                    <li class="name">👤 {{ s.name }}</li>
+                    <li class="selection">🏳️ {{ s.selection }}</li>
+                </ul>
             </div>
         </div>
 
@@ -35,7 +39,7 @@
 
             <div class="d-flex flex-wrap gap-2 mt-2">
                 <div class="badge bg-success" *ngFor="let s of offered">
-                    #{{ s.number }} - {{ s.playerName }} - ({{ s.acronym }})
+                    👕{{ s.code }} - 👤{{ s.name }} - 🏳️({{ s.selection }})
                 </div>
             </div>
         </div>
@@ -54,7 +58,7 @@
                     placeholder="(83) 99999-9999" mask="(00) 00000-0000">
             </div>
 
-            <button class="btn btn-success w-100">
+            <button class="btn btn-success w-100" [disabled]="!name || phone.trim().length !== 11">
                 Enviar proposta
             </button>
 

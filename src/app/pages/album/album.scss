@@ -10,11 +10,6 @@
   border: 2px solid #eee;
 }
 
-.sticker-card img {
-  width: 100%;
-  border-radius: 8px;
-}
-
 /* Estados */
 .sticker-card.trade {
   border-color: #ffc107;
@@ -43,11 +38,17 @@
   position: relative;
   cursor: pointer;
   transition: 0.2s;
+
+  /* NOVO */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .sticker-card img {
   width: 100%;
   border-radius: 8px;
+  margin-bottom: 8px; /* NOVO */
 }
 
 .sticker-card:hover {
@@ -63,4 +64,51 @@
   position: absolute;
   top: 6px;
   right: 6px;
+}
+
+/* ========================= */
+/* NOVA ÁREA DE INFORMAÇÕES */
+/* ========================= */
+
+.sticker-info {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sticker-info li {
+  font-size: 0.8rem;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+/* Código */
+.sticker-info .code {
+  font-weight: 600;
+}
+
+/* Nome */
+.sticker-info .name {
+  min-height: 38px; /* reserva espaço para até 2 linhas */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+/* Seleção */
+.sticker-info .selection {
+  color: #666;
+  font-size: 0.75rem;
+}
+
+/* Emoji */
+.sticker-info li span {
+  margin-right: 4px;
 }

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import * as bootstrap from 'bootstrap';
 import { Router } from '@angular/router';
 import { CardsService } from '../../services/cards.service';
+import { HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-album',
@@ -18,12 +19,16 @@ export class Album implements OnInit {
   stickersNotOwned: Sticker[] = [];
   currentPageNotOwned: number = 0;
   totalPagesNotOwned: number = 0;
-  totalStickers: number = 0;
+  totalNotOwnedStickers: number = 0;
 
   stickersRepeated: Sticker[] = [];
   currentPageRepeated: number = 0;
   totalPagesRepeated: number = 0;
   totalStickersRepeated: number = 0;
+
+  totalOwnedStickers: number = 0;
+
+  qtdStickersInAlbum: number = 1034;
 
 
   selectedToTrade: any[] = [];
@@ -34,18 +39,27 @@ export class Album implements OnInit {
   constructor(
     private router: Router,
     private cd: ChangeDetectorRef,
-    private cardsService: CardsService
+    private cardsService: CardsService,
+    private headerService: HeaderService
   ) { }
 
   ngOnInit() {
     this.loadDataNotOwned();
     this.loadDataRepeated();
+    this.loadCountOwned();
   }
 
   loadCountOwned() {
     this.cardsService.getCountOwned().subscribe({
       next: data => {
-        this.totalStickers = data;
+        this.totalOwnedStickers = data;
+        this.headerService.update({
+          username: this.username,
+          team: 'Brasil',
+          countryCode: 'BR',
+          owned: this.totalOwnedStickers,
+          total: this.qtdStickersInAlbum
+        });
       }
     });
   }
@@ -55,7 +69,7 @@ export class Album implements OnInit {
     this.cardsService.getByRepeated(page, 24).subscribe({
       next: data => {
         console.log('Dados repeated recebidos:', data);
-        this.stickersRepeated = [...this.stickersRepeated, ...data.content];
+        this.stickersRepeated = data.content;
         this.currentPageRepeated = data.number;
         this.totalPagesRepeated = data.totalPages;
         this.totalStickersRepeated = data.totalElements;
@@ -69,13 +83,13 @@ export class Album implements OnInit {
 
   loadDataNotOwned(page: number = 0) {
 
-    this.cardsService.getAll(page, 24).subscribe({
+    this.cardsService.getByNotOwned(page, 24).subscribe({
       next: data => {
         console.log('Dados not-owned recebidos:', data);
         this.stickersNotOwned = data.content;
         this.currentPageNotOwned = data.number;
         this.totalPagesNotOwned = data.totalPages;
-        this.totalStickers = data.totalElements;
+        this.totalNotOwnedStickers = data.totalElements;
       },
       error: err => {
         console.error('Erro:', err);
@@ -111,20 +125,20 @@ export class Album implements OnInit {
     }
   }
 
-  getOwnedCount() { //TODO faltando ajustar para pegar do backend
-    return this.stickersNotOwned.filter(s => s.owned).length;
+  getOwnedCount() {
+    return this.totalOwnedStickers;
   }
 
   getRepeatedCount() {
-    return this.stickersRepeated.filter(s => s.repeated).length;
+    return this.totalStickersRepeated;
   }
 
   getMissingCount() {
-    return this.stickersNotOwned.filter(s => !s.owned).length;
+    return this.qtdStickersInAlbum - this.getOwnedCount();
   }
 
   getProgress() {
-    return (this.getOwnedCount() / this.totalStickers) * 100;
+    return (this.getOwnedCount() / this.qtdStickersInAlbum) * 100;
   }
 
   getTradeStickers() {

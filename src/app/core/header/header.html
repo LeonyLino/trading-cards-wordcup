@@ -11,11 +11,11 @@
         <!-- Info -->
         <div class="user-info">
 
-            <h2>{{ username }}</h2>
+            <h2>{{ data.username }}</h2>
 
             <p class="team">
-                <img [src]="'https://flagcdn.com/w40/' + countryCode.toLowerCase() + '.png'" class="flag">
-                {{ team }}
+                <img [src]="'https://flagcdn.com/w40/' + data.countryCode.toLowerCase() + '.png'" class="flag">
+                {{ data.team }}
             </p>
 
             <!-- Progresso -->
@@ -24,7 +24,7 @@
                 </div>
             </div>
 
-            <small>{{ owned }} / {{ total }} figurinhas</small>
+            <small>{{ data.owned }} / {{ data.total }} figurinhas</small>
 
         </div>
 

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { HeaderData, HeaderService } from '../../services/header.service';
 
 @Component({
   selector: 'app-header',
@@ -8,14 +9,18 @@ import { Component, Input } from '@angular/core';
   styleUrl: './header.scss',
 })
 export class Header {
-  @Input() username: string = 'Lorenzzo Lino';
-  @Input() team: string = 'Brasil';
-  @Input() countryCode: string = 'BR';
-  @Input() owned: number = 0;
-  @Input() total: number = 0;
+  data!: HeaderData;
+
+  constructor(private headerService: HeaderService) { }
+
+  ngOnInit() {
+    this.headerService.headerData$.subscribe(data => {
+      this.data = data;
+    });
+  }
 
   get progress(): number {
-    if (!this.total) return 0;
-    return (this.owned / this.total) * 100;
+    if (!this.data?.total) return 0;
+    return (this.data.owned / this.data.total) * 100;
   }
 }

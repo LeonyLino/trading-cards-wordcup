@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../environment';
 import { PageResponse } from '../models/PageResponse.model';
 import { Sticker } from '../models/sticker.model';
-import { getAppScopedQueuedEventInfos } from '@angular/core/primitives/event-dispatch';
 
 @Injectable({
   providedIn: 'root',

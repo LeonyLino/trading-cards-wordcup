@@ -32,4 +32,17 @@ export class CardsService {
     return this.http.get<number>(`${this.API_URL}/count`);
   }
 
+  setOwned(sticker: Sticker): Observable<any> {
+    return this.http.patch(
+      `${this.API_URL}/${sticker.id}/set-owned`,
+      {}
+    );
+  }
+
+  setRepeated(sticker: Sticker): Observable<any> {
+    return this.http.patch(
+      `${this.API_URL}/${sticker.id}/set-repeated`,
+      {}
+    );
+  }
 }

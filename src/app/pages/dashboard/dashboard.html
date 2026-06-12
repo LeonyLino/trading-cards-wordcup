@@ -50,14 +50,36 @@
                         ✔
                     </button>
 
-                    <button class="btn btn-sm btn-warning" (click)="toggleRepeated(sticker)">
-                        🔁
-                    </button>
+                    @if (sticker.owned) {
+                        <button class="btn btn-sm btn-warning" (click)="toggleRepeated(sticker)">
+                            🔁
+                        </button>
+                    }
 
                 </div>
 
             </div>
+
         </div>
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" [class.disabled]="currentPage === 0">
+                    <button class="page-link" (click)="previousPage()">
+                        Anterior
+                    </button>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        Página {{ currentPage + 1 }} de {{ totalPages}}
+                    </span>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+                    <button class="page-link" (click)="nextPage()">
+                        Próxima
+                    </button>
+                </li>
+            </ul>
+        </nav>
 
     </div>
 

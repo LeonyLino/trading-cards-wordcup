@@ -24,8 +24,16 @@ export class CardsService {
     return this.http.get<PageResponse<Sticker>>(`${this.API_URL}/not-owned?page=${page}&size=${size}`);
   }
 
+  getNotOwnedByCode(page = 0, size = 24, code: string): Observable<PageResponse<Sticker>> {
+    return this.http.get<PageResponse<Sticker>>(`${this.API_URL}/not-owned?page=${page}&size=${size}&code=${code}`);
+  }
+
   getByRepeated(page = 0, size = 24): Observable<PageResponse<Sticker>> {
     return this.http.get<PageResponse<Sticker>>(`${this.API_URL}/repeated?page=${page}&size=${size}`);
+  }
+
+  getRepeatedByCode(page = 0, size = 24, code: string): Observable<PageResponse<Sticker>> {
+    return this.http.get<PageResponse<Sticker>>(`${this.API_URL}/repeated?page=${page}&size=${size}&code=${code}`);
   }
 
   getCountOwned(): Observable<number> {

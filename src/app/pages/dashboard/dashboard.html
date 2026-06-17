@@ -1,4 +1,11 @@
 <div class="container py-4">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn btn-primary"
+            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+            (click)="logout()">
+            Logout
+        </button>
+    </div>
 
     <h2 class="mb-4 text-center">🏆 Meu Álbum</h2>
 
@@ -27,8 +34,6 @@
              'repeated': sticker.repeated
            }">
 
-                <img [src]="sticker.imageUrl == '' ? 'https://res.cloudinary.com/dmdqo7ill/image/upload/v1779831050/34692690-386f-4268-89cf-0a8271ae3265.png' : sticker.imageUrl"
-                    alt="sticker">
 
                 <div class="sticker-info">
                     <strong>👕{{ sticker.code }}</strong>
@@ -46,15 +51,31 @@
                 <!-- Ações -->
                 <div class="actions">
 
+                    @if (filter === 'MISSING') {
                     <button class="btn btn-sm btn-success" (click)="toggleOwned(sticker)">
                         ✔
                     </button>
-
-                    @if (sticker.owned) {
-                        <button class="btn btn-sm btn-warning" (click)="toggleRepeated(sticker)">
-                            🔁
-                        </button>
                     }
+
+                    @if ( filter === 'OWNED' && !sticker.repeated) {
+
+                    <button class="btn btn-sm btn-danger" (click)="toggleOwned(sticker)">
+                        ❌
+                    </button>
+
+                    <button class="btn btn-sm btn-warning" (click)="toggleRepeated(sticker)">
+                        🔁
+                    </button>
+                    }
+
+                    @if (filter === 'REPEATED') {
+                    <button class="btn btn-sm btn-warning" (click)="toggleRepeated(sticker)">
+                        ❌
+                    </button>
+                    }
+
+
+
 
                 </div>
 

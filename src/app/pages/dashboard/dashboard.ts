@@ -3,6 +3,8 @@ import { Sticker } from '../../models/sticker.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardsService } from '../../services/cards.service';
+import { Router } from '@angular/router';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +20,9 @@ export class Dashboard implements OnInit {
   totalPages: number = 0;
 
   constructor(
-    private cardService: CardsService
+    private cardService: CardsService,
+    private loginService: LoginService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -31,7 +35,6 @@ export class Dashboard implements OnInit {
         this.stickers = data.content;
         this.currentPage = data.number;
         this.totalPages = data.totalPages;
-        console.log('data:', data);
       }
     });
 
@@ -52,7 +55,6 @@ export class Dashboard implements OnInit {
   }
 
   toggleRepeated(sticker: Sticker) {
-    console.log('sticker:', sticker);
     if (!sticker.owned) return;
 
     sticker.repeated = !sticker.repeated;
@@ -69,7 +71,6 @@ export class Dashboard implements OnInit {
       case 'OWNED':
         return this.stickers.filter(s => s.owned);
       case 'REPEATED':
-        console.log('stickers:', this.stickers.filter(s => s.repeated));
         return this.stickers.filter(s => s.repeated);
       case 'MISSING':
         return this.stickers.filter(s => !s.owned);
@@ -120,7 +121,9 @@ export class Dashboard implements OnInit {
     return this.stickers.filter(s => !s.owned).length;
   }
 
-  save() {
-    localStorage.setItem('stickers', JSON.stringify(this.stickers));
+  logout() {
+    this.loginService.logout();
+    this.router.navigate(['/album']);
   }
+
 }

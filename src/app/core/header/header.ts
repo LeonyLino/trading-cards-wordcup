@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { HeaderData, HeaderService } from '../../services/header.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,10 @@ import { HeaderData, HeaderService } from '../../services/header.service';
 export class Header {
   data!: HeaderData;
 
-  constructor(private headerService: HeaderService) { }
+  constructor(
+    private headerService: HeaderService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.headerService.headerData$.subscribe(data => {
@@ -22,5 +26,9 @@ export class Header {
   get progress(): number {
     if (!this.data?.total) return 0;
     return (this.data.owned / this.data.total) * 100;
+  }
+
+  toLinkAlbum() {
+    this.router.navigate(['/album']);
   }
 }

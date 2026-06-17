@@ -1,20 +1,51 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { LoginService } from '../../services/login.service';
+import { Router } from '@angular/router';
+import { PreloaderCircular } from "../../core/preloader-circular/preloader-circular";
+import { LoginRequest } from '../../models/login-request';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PreloaderCircular],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
   email: string = '';
   password: string = '';
+  loading: boolean = false;
+
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+  ) { }
 
   login() {
-    console.log('Email:', this.email);
-    console.log('Senha:', this.password);
+    this.loading = true;
+
+
+    const loginData: LoginRequest = {
+      email: this.email,
+      password: this.password
+    };
+
+    this.loginService.login(loginData).subscribe({
+      next: (response) => {
+        console.log('Login response:', response);
+        sessionStorage.setItem('token', response.token);
+        this.loginService.setUser(response);
+        console.log('Login bem-sucedido:', response);
+        this.router.navigate(['/dashboard']);
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Erro no login:', error);
+        this.loading = false;
+      }
+    });
   }
+
 
 }

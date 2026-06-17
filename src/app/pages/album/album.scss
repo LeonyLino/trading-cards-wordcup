@@ -112,3 +112,14 @@
 .sticker-info li span {
   margin-right: 4px;
 }
+
+.filter-input {
+  width: 280px;
+  max-width: 100%;
+}
+
+@media (max-width: 576px) {
+  .filter-input {
+    width: 100%;
+  }
+}

@@ -5,11 +5,12 @@ import * as bootstrap from 'bootstrap';
 import { Router } from '@angular/router';
 import { CardsService } from '../../services/cards.service';
 import { HeaderService } from '../../services/header.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-album',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './album.html',
   styleUrl: './album.scss',
 })
@@ -32,8 +33,8 @@ export class Album implements OnInit {
 
 
   selectedToTrade: any[] = [];
-
   selectedOffers: any[] = [];
+
 
 
   constructor(
@@ -66,7 +67,7 @@ export class Album implements OnInit {
 
   loadDataRepeated(page: number = 0) {
 
-    this.cardsService.getByRepeated(page, 24).subscribe({
+    this.cardsService.getRepeatedByCode(page, 24, this.tradeFilter).subscribe({
       next: data => {
         console.log('Dados repeated recebidos:', data);
         this.stickersRepeated = data.content;
@@ -83,7 +84,7 @@ export class Album implements OnInit {
 
   loadDataNotOwned(page: number = 0) {
 
-    this.cardsService.getByNotOwned(page, 24).subscribe({
+    this.cardsService.getNotOwnedByCode(page, 24, this.missingFilter).subscribe({
       next: data => {
         console.log('Dados not-owned recebidos:', data);
         this.stickersNotOwned = data.content;
@@ -243,4 +244,27 @@ export class Album implements OnInit {
       }
     });
   }
+
+  tradeFilter = '';
+  missingFilter = '';
+
+  private tradeFilterTimeout: any;
+  private missingFilterTimeout: any;
+
+  onTradeFilterChange() {
+    clearTimeout(this.tradeFilterTimeout);
+
+    this.tradeFilterTimeout = setTimeout(() => {
+      this.loadDataRepeated(0);
+    }, 400);
+  }
+
+  onMissingFilterChange() {
+    clearTimeout(this.missingFilterTimeout);
+
+    this.missingFilterTimeout = setTimeout(() => {
+      this.loadDataNotOwned(0);
+    }, 400);
+  }
+
 }

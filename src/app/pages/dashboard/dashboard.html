@@ -16,6 +16,14 @@
         ❌ {{ getMissingCount() }}
     </div>
 
+    <!-- Campo de pesquisa -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 col-md-8 col-lg-6">
+            <input type="text" class="form-control" placeholder="🔍 Pesquise por código" [(ngModel)]="search"
+                (input)="search = search.toUpperCase(); onSearchInput()">
+        </div>
+    </div>
+
     <!-- Filtros -->
     <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
         <button class="btn btn-outline-primary" (click)="filter = 'ALL'">Todas</button>

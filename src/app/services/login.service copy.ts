@@ -22,7 +22,6 @@ export class LoginService {
     }
 
     login(login: LoginRequest): Observable<LoginResponse> {
-        console.log('login service', login);
         return this.http.post<LoginResponse>(this.API_URL.concat("/login"), login);
     }
 

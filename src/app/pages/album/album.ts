@@ -69,7 +69,6 @@ export class Album implements OnInit {
 
     this.cardsService.getRepeatedByCode(page, 24, this.tradeFilter).subscribe({
       next: data => {
-        console.log('Dados repeated recebidos:', data);
         this.stickersRepeated = data.content;
         this.currentPageRepeated = data.number;
         this.totalPagesRepeated = data.totalPages;
@@ -86,7 +85,6 @@ export class Album implements OnInit {
 
     this.cardsService.getNotOwnedByCode(page, 24, this.missingFilter).subscribe({
       next: data => {
-        console.log('Dados not-owned recebidos:', data);
         this.stickersNotOwned = data.content;
         this.currentPageNotOwned = data.number;
         this.totalPagesNotOwned = data.totalPages;
@@ -185,8 +183,6 @@ export class Album implements OnInit {
     } else {
       this.selectedOffers = [...this.selectedOffers, sticker];
     }
-
-    console.log('Selecionadas:', this.selectedOffers);
   }
 
   isSelected(sticker: any): boolean {

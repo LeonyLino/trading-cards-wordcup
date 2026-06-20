@@ -16,8 +16,8 @@ export class CardsService {
     private http: HttpClient
   ) { }
 
-  getAll(page = 0, size = 24): Observable<PageResponse<Sticker>> {
-    return this.http.get<PageResponse<Sticker>>(`${this.API_URL}?page=${page}&size=${size}`);
+  getAll(page = 0, size = 24, code: string): Observable<PageResponse<Sticker>> {
+    return this.http.get<PageResponse<Sticker>>(`${this.API_URL}?page=${page}&size=${size}&code=${code}`);
   }
 
   getByNotOwned(page = 0, size = 24): Observable<PageResponse<Sticker>> {

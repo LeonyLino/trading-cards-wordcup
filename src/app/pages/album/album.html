@@ -45,7 +45,7 @@
     <h4 class="mb-0">🔁 Disponíveis para troca</h4>
 
     <input type="text" class="form-control filter-input" [(ngModel)]="tradeFilter"
-      (input)="tradeFilter = tradeFilter.toUpperCase(); onTradeFilterChange()" placeholder="Filtrar...">
+      (input)="tradeFilter = tradeFilter.toUpperCase(); onTradeFilterChange()" placeholder="🔍 Pesquise por código">
   </div>
 
   <div class="row g-3 mb-5">
@@ -99,8 +99,8 @@
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <h4 class="mb-0">❌ Faltantes</h4>
 
-    <input type="text" class="form-control filter-input" placeholder="Filtrar..." [(ngModel)]="missingFilter"
-      (input)="missingFilter = missingFilter.toUpperCase(); onMissingFilterChange()">
+    <input type="text" class="form-control filter-input" placeholder="🔍 Pesquise por código"
+      [(ngModel)]="missingFilter" (input)="missingFilter = missingFilter.toUpperCase(); onMissingFilterChange()">
   </div>
 
   <div class="row g-3 mb-5">
@@ -188,7 +188,14 @@
 
         <!-- Figurinhas que ele pode oferecer -->
         <div>
-          <strong>Escolha o que você pode oferecer:</strong>
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <strong class="mb-0">Escolha o que você pode oferecer:</strong>
+            <div class="d-flex justify-content-end mb-3 mt-2">
+              <input type="search" class="form-control form-control-sm filter-input" style="width: 220px;"
+                placeholder="🔍 Pesquise por código" [(ngModel)]="missingFilter"
+                (input)="missingFilter = missingFilter.toUpperCase(); onMissingFilterChange()">
+            </div>
+          </div>
 
           <div class="sticker-grid mt-3">
 

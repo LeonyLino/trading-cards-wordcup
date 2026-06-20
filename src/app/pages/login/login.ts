@@ -33,10 +33,8 @@ export class Login {
 
     this.loginService.login(loginData).subscribe({
       next: (response) => {
-        console.log('Login response:', response);
         sessionStorage.setItem('token', response.token);
         this.loginService.setUser(response);
-        console.log('Login bem-sucedido:', response);
         this.router.navigate(['/dashboard']);
         this.loading = false;
       },

@@ -31,7 +31,6 @@ export class TradeForm {
     this.wanted = nav.wanted || [];
     this.offered = nav.offered || [];
 
-    console.log('Dados recebidos no form proposta:', { wanted: this.wanted, offered: this.offered });
   }
 
   submitted = false;
@@ -58,8 +57,6 @@ export class TradeForm {
       wanted: this.wanted.map(item => item.code).join(','),
       offered: this.offered.map(item => item.code).join(',')
     };
-
-    console.log('Proposta final:', payload);
 
     this.exchangeProposalService.submit(payload).subscribe({
       next: () => {

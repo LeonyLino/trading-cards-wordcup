@@ -22,7 +22,6 @@ export class LoginService {
     }
 
     login(login: LoginRequest): Observable<LoginResponse> {
-        console.log('login service', login);
         return this.http.post<LoginResponse>(this.API_URL.concat("/login"), login);
     }
 
@@ -54,7 +53,6 @@ export class LoginService {
     }
 
     public isLoggedIn(): boolean {
-        console.log('Checking if user is logged in...');
         return !!sessionStorage.getItem('token');
     }
 

@@ -30,7 +30,7 @@ export class Dashboard implements OnInit {
   }
 
   loadData(page: number = 0) {
-    this.cardService.getAll(page).subscribe({
+    this.cardService.getAll(page, 24, this.search).subscribe({
       next: data => {
         this.stickers = data.content;
         this.currentPage = data.number;
@@ -119,6 +119,18 @@ export class Dashboard implements OnInit {
 
   getMissingCount() {
     return this.stickers.filter(s => !s.owned).length;
+  }
+
+  search = '';
+
+  private searchTimeout: any;
+
+  onSearchInput() {
+    clearTimeout(this.searchTimeout);
+
+    this.searchTimeout = setTimeout(() => {
+      this.loadData(0);
+    }, 400);
   }
 
   logout() {

@@ -17,11 +17,13 @@
     </div>
 
     <!-- Campo de pesquisa -->
-    <div class="row justify-content-center mb-4">
-        <div class="col-12 col-md-8 col-lg-6">
-            <input type="text" class="form-control" placeholder="🔍 Pesquise por código" [(ngModel)]="search"
-                (input)="search = search.toUpperCase(); onSearchInput()">
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+
+        <h4 class="mb-0">📖 Figurinhas</h4>
+
+        <app-filter-input placeholder="🔍 Pesquise por código" [(value)]="search" (valueChange)="onSearchInput()">
+        </app-filter-input>
+
     </div>
 
     <!-- Filtros -->
@@ -37,78 +39,58 @@
 
         <div class="col-6 col-md-3 col-lg-2" *ngFor="let sticker of filteredStickers()">
 
-            <div class="sticker-card" [ngClass]="{
-             'owned': sticker.owned,
-             'repeated': sticker.repeated
-           }">
+            <app-sticker-card [sticker]="sticker" [variant]="
+            sticker.repeated
+                ? 'trade'
+                : sticker.owned
+                    ? 'owned'
+                    : 'missing'">
 
-
-                <div class="sticker-info">
-                    <strong>👕{{ sticker.code }}</strong>
-
-                    <div class="player">{{ sticker.name }}</div>
-
-                    <div class="team">
-                        <span class="badge bg-dark me-1">
-                            {{ sticker.code }}
-                        </span>
-                        {{ sticker.selection }}
-                    </div>
-                </div>
-
-                <!-- Ações -->
-                <div class="actions">
+                <div actions>
 
                     @if (filter === 'MISSING') {
+
                     <button class="btn btn-sm btn-success" (click)="toggleOwned(sticker)">
+
                         ✔
+
                     </button>
+
                     }
 
-                    @if ( filter === 'OWNED' && !sticker.repeated) {
+                    @if (filter === 'OWNED' && !sticker.repeated) {
 
                     <button class="btn btn-sm btn-danger" (click)="toggleOwned(sticker)">
+
                         ❌
+
                     </button>
 
                     <button class="btn btn-sm btn-warning" (click)="toggleRepeated(sticker)">
+
                         🔁
+
                     </button>
+
                     }
 
                     @if (filter === 'REPEATED') {
+
                     <button class="btn btn-sm btn-warning" (click)="toggleRepeated(sticker)">
+
                         ❌
+
                     </button>
+
                     }
-
-
-
 
                 </div>
 
-            </div>
+            </app-sticker-card>
 
         </div>
-        <nav class="mt-4">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" [class.disabled]="currentPage === 0">
-                    <button class="page-link" (click)="previousPage()">
-                        Anterior
-                    </button>
-                </li>
-                <li class="page-item disabled">
-                    <span class="page-link">
-                        Página {{ currentPage + 1 }} de {{ totalPages}}
-                    </span>
-                </li>
-                <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
-                    <button class="page-link" (click)="nextPage()">
-                        Próxima
-                    </button>
-                </li>
-            </ul>
-        </nav>
+        <app-pagination [page]="currentPage" [totalPages]="totalPages" (previous)="previousPage()" (next)="nextPage()">
+        </app-pagination>
 
     </div>
 

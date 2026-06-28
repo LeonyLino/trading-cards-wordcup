@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { Sticker } from '../../models/sticker.model';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CardsService } from '../../services/cards.service';
 import { Router } from '@angular/router';
+import { FilterInput } from "../../core/filter-input/filter-input";
+import { Pagination } from "../../core/pagination/pagination";
+import { Sticker } from '../../models/sticker.model';
+import { CardsService } from '../../services/cards.service';
 import { LoginService } from '../../services/login.service';
+import { StickerCard } from "../album/sticker-card/sticker-card";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FilterInput, StickerCard, Pagination],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

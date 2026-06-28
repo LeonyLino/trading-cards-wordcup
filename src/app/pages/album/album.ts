@@ -1,16 +1,22 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { Sticker } from '../../models/sticker.model';
 import { CommonModule } from '@angular/common';
-import * as bootstrap from 'bootstrap';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as bootstrap from 'bootstrap';
+import { FilterInput } from "../../core/filter-input/filter-input";
+import { Pagination } from "../../core/pagination/pagination";
+import { Sticker } from '../../models/sticker.model';
 import { CardsService } from '../../services/cards.service';
 import { HeaderService } from '../../services/header.service';
-import { FormsModule } from '@angular/forms';
+import { TradeModal } from '../trade-modal/trade-modal';
+import { Header } from "./header/header";
+import { StickerCard } from "./sticker-card/sticker-card";
+import { Summary } from "./summary/summary";
 
 @Component({
   selector: 'app-album',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Header, Summary, StickerCard, Pagination, FilterInput, TradeModal],
   templateUrl: './album.html',
   styleUrl: './album.scss',
 })
@@ -35,7 +41,11 @@ export class Album implements OnInit {
   selectedToTrade: any[] = [];
   selectedOffers: any[] = [];
 
+  tradeFilter = '';
+  missingFilter = '';
 
+  @ViewChild(TradeModal)
+  tradeModal!: TradeModal;
 
   constructor(
     private router: Router,
@@ -124,20 +134,12 @@ export class Album implements OnInit {
     }
   }
 
-  getOwnedCount() {
-    return this.totalOwnedStickers;
-  }
-
-  getRepeatedCount() {
-    return this.totalStickersRepeated;
-  }
-
   getMissingCount() {
-    return this.qtdStickersInAlbum - this.getOwnedCount();
+    return this.qtdStickersInAlbum - this.totalOwnedStickers;
   }
 
   getProgress() {
-    return (this.getOwnedCount() / this.qtdStickersInAlbum) * 100;
+    return (this.totalOwnedStickers / this.qtdStickersInAlbum) * 100;
   }
 
   getTradeStickers() {
@@ -162,19 +164,6 @@ export class Album implements OnInit {
     return this.selectedOffers.some(s => s.id === sticker.id);
   }
 
-  openTradeModal(sticker: any) {
-    this.selectedToTrade = { ...sticker }; // nova referência
-    this.selectedOffers = [];
-
-    this.cd.detectChanges(); // força render
-
-    requestAnimationFrame(() => {
-      const modal = new bootstrap.Modal(
-        document.getElementById('tradeModal')!
-      );
-      modal.show();
-    });
-  }
   toggleSticker(sticker: any) {
     const exists = this.selectedOffers.some(s => s.id === sticker.id);
 
@@ -205,62 +194,33 @@ export class Album implements OnInit {
 
   openTradeModalMultiple() {
 
-    if (this.selectedToTrade.length === 0) return;
-
-    // this.selectedOffers = [...this.selectedToTrade];
+    if (this.selectedToTrade.length === 0) {
+      return;
+    }
 
     this.cd.detectChanges();
 
     requestAnimationFrame(() => {
-      const modal = new bootstrap.Modal(
-        document.getElementById('tradeModal')!
-      );
-      modal.show();
+      this.tradeModal.show();
     });
+
   }
 
   submitTrade() {
 
-    const modalEl = document.getElementById('tradeModal');
-
-    if (modalEl) {
-      const modalInstance = bootstrap.Modal.getInstance(modalEl);
-      modalInstance?.hide();
-    }
-
-    // limpeza extra (boa prática)
-    document.body.classList.remove('modal-open');
-    document.querySelectorAll('.modal-backdrop')
-      .forEach(el => el.remove());
+    console.log('antes do navigate');
 
     this.router.navigate(['/trade'], {
       state: {
         wanted: this.selectedToTrade,
         offered: this.selectedOffers
       }
+    }).then(result => {
+      console.log('resultado:', result);
+    }).catch(err => {
+      console.error(err);
     });
-  }
 
-  tradeFilter = '';
-  missingFilter = '';
-
-  private tradeFilterTimeout: any;
-  private missingFilterTimeout: any;
-
-  onTradeFilterChange() {
-    clearTimeout(this.tradeFilterTimeout);
-
-    this.tradeFilterTimeout = setTimeout(() => {
-      this.loadDataRepeated(0);
-    }, 400);
-  }
-
-  onMissingFilterChange() {
-    clearTimeout(this.missingFilterTimeout);
-
-    this.missingFilterTimeout = setTimeout(() => {
-      this.loadDataNotOwned(0);
-    }, 400);
   }
 
 }

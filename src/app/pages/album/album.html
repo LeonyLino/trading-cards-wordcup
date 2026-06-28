@@ -1,269 +1,74 @@
 <div class="container py-4">
 
   <!-- 👤 Header do usuário -->
-  <div class="profile-header text-center mb-4">
-    <h2>📖 Álbum de {{ username }}</h2>
-
-    <p class="text-muted">
-      {{ getOwnedCount() }} / {{ qtdStickersInAlbum }} figurinhas
-    </p>
-
-    <div class="progress mb-2">
-      <div class="progress-bar bg-success" [style.width.%]="getProgress()">
-      </div>
-    </div>
-  </div>
+  <app-header [username]="username" [owned]="totalOwnedStickers" [total]="qtdStickersInAlbum">
+  </app-header>
 
   <!-- 🧠 Resumo -->
-  <div class="row text-center mb-4">
-
-    <div class="col">
-      <div class="card p-2 shadow-sm">
-        ✔ <strong>{{ getOwnedCount() }}</strong><br>
-        Tenho
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="card p-2 shadow-sm">
-        🔁 <strong>{{ getRepeatedCount() }}</strong><br>
-        Troca
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="card p-2 shadow-sm">
-        ❌ <strong>{{ getMissingCount() }}</strong><br>
-        Faltam
-      </div>
-    </div>
-
-  </div>
+  <app-summary [owned]="totalOwnedStickers" [repeated]="totalStickersRepeated" [missing]="getMissingCount()">
+  </app-summary>
 
   <!-- 🔁 PARA TROCA -->
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <h4 class="mb-0">🔁 Disponíveis para troca</h4>
 
-    <input type="text" class="form-control filter-input" [(ngModel)]="tradeFilter"
-      (input)="tradeFilter = tradeFilter.toUpperCase(); onTradeFilterChange()" placeholder="🔍 Pesquise por código">
+    <app-filter-input placeholder="🔍 Pesquise por código" [(value)]="tradeFilter" (valueChange)="loadDataRepeated(0)">
+    </app-filter-input>
   </div>
 
   <div class="row g-3 mb-5">
+
     <div class="col-4 col-md-2" *ngFor="let sticker of getTradeStickers()">
 
-      <div class="sticker-card trade selectable" [class.selected]="isTradeSelected(sticker)"
-        (click)="toggleTradeSelection(sticker)">
-
-        <input type="checkbox" class="form-check-input checkbox" [checked]="isTradeSelected(sticker)"
-          (click)="$event.stopPropagation()" (change)="toggleTradeSelection(sticker)">
-
-        <img [src]="sticker.imageUrl">
-
-        <ul class="sticker-info">
-          <li class="code">👕 {{ sticker.code }}</li>
-          <li class="name">👤 {{ sticker.name }}</li>
-          <li class="selection">🏳️ {{ sticker.selection }}</li>
-        </ul>
-
-      </div>
+      <app-sticker-card [sticker]="sticker" variant="trade" [selectable]="true" [selected]="isTradeSelected(sticker)"
+        (cardClick)="toggleTradeSelection($event)">
+      </app-sticker-card>
 
     </div>
-    <div class="text-center mb-4">
-      <button class="btn btn-success" [disabled]="selectedToTrade.length === 0" (click)="openTradeModalMultiple()">
-        🔁 Propor troca ({{ selectedToTrade.length }})
-      </button>
-    </div>
+
   </div>
-  <nav class="mt-4">
-    <ul class="pagination justify-content-center">
-      <li class="page-item" [class.disabled]="currentPageRepeated === 0">
-        <button class="page-link" (click)="previousPageRepeated()">
-          Anterior
-        </button>
-      </li>
-      <li class="page-item disabled">
-        <span class="page-link">
-          Página {{ currentPageRepeated + 1 }} de {{ totalPagesRepeated }}
-        </span>
-      </li>
-      <li class="page-item" [class.disabled]="currentPageRepeated === totalPagesRepeated - 1">
-        <button class="page-link" (click)="nextPageRepeated()">
-          Próxima
-        </button>
-      </li>
-    </ul>
-  </nav>
+
+  <div class="text-center mb-4">
+
+    <button class="btn btn-success" [disabled]="selectedToTrade.length === 0" (click)="openTradeModalMultiple()">
+
+      🔁 Propor troca ({{ selectedToTrade.length }})
+
+    </button>
+
+  </div>
+  <app-pagination [page]="currentPageRepeated" [totalPages]="totalPagesRepeated" (previous)="previousPageRepeated()"
+    (next)="nextPageRepeated()">
+  </app-pagination>
 
 
   <!-- ❌ FALTANTES -->
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <h4 class="mb-0">❌ Faltantes</h4>
 
-    <input type="text" class="form-control filter-input" placeholder="🔍 Pesquise por código"
-      [(ngModel)]="missingFilter" (input)="missingFilter = missingFilter.toUpperCase(); onMissingFilterChange()">
+    <app-filter-input placeholder="🔍 Pesquise por código" [(value)]="missingFilter"
+      (valueChange)="loadDataNotOwned(0)">
+    </app-filter-input>
   </div>
 
   <div class="row g-3 mb-5">
+
     <div class="col-4 col-md-2" *ngFor="let sticker of getMissingStickers()">
 
-      <div class="sticker-card trade">
-        <img [src]="sticker.imageUrl">
-
-        <ul class="sticker-info">
-          <li class="code">👕 {{ sticker.code }}</li>
-          <li class="name">👤 {{ sticker.name }}</li>
-          <li class="selection">🏳️ {{ sticker.selection }}</li>
-        </ul>
-      </div>
+      <app-sticker-card [sticker]="sticker" variant="missing">
+      </app-sticker-card>
 
     </div>
+
   </div>
-  <nav class="mt-4">
-    <ul class="pagination justify-content-center">
-
-      <li class="page-item" [class.disabled]="currentPageNotOwned === 0">
-
-        <button class="page-link" (click)="previousPageNotOwned()">
-
-          Anterior
-
-        </button>
-
-      </li>
-
-      <li class="page-item disabled">
-
-        <span class="page-link">
-          Página {{ currentPageNotOwned + 1 }} de {{ totalPagesNotOwned }}
-        </span>
-
-      </li>
-
-      <li class="page-item" [class.disabled]="currentPageNotOwned === totalPagesNotOwned - 1">
-
-        <button class="page-link" (click)="nextPageNotOwned()">
-
-          Próxima
-
-        </button>
-
-      </li>
-
-    </ul>
-  </nav>
+  <app-pagination [page]="currentPageNotOwned" [totalPages]="totalPagesNotOwned" (previous)="previousPageNotOwned()"
+    (next)="nextPageNotOwned()">
+  </app-pagination>
 </div>
 
 <!-- 🔁 MODAL DE TROCA -->
-<div class="modal fade" id="tradeModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h5 class="modal-title">🔁 Propor troca</h5>
-        <button class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-
-      <div class="modal-body">
-
-        <!-- Figurinha desejada -->
-        <div class="text-center mb-3">
-          <strong>Figurinha(s) desejada:</strong>
-
-          <div class="sticker-grid mt-3">
-
-            <div class="sticker-card" *ngFor="let sticker of selectedToTrade">
-
-              <img [src]="sticker.imageUrl">
-
-              <ul class="sticker-info">
-                <li class="code">👕 {{ sticker.code }}</li>
-                <li class="name">👤 {{ sticker.name }}</li>
-                <li class="selection">🏳️ {{ sticker.selection }}</li>
-              </ul>
-
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Figurinhas que ele pode oferecer -->
-        <div>
-          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-            <strong class="mb-0">Escolha o que você pode oferecer:</strong>
-            <div class="d-flex justify-content-end mb-3 mt-2">
-              <input type="search" class="form-control form-control-sm filter-input" style="width: 220px;"
-                placeholder="🔍 Pesquise por código" [(ngModel)]="missingFilter"
-                (input)="missingFilter = missingFilter.toUpperCase(); onMissingFilterChange()">
-            </div>
-          </div>
-
-          <div class="sticker-grid mt-3">
-
-            <div class="sticker-card trade selectable" *ngFor="let sticker of getMissingStickers()"
-              (click)="toggleOfferSelection(sticker)" [class.selected]="isOfferSelected(sticker)">
-
-              <!-- checkbox -->
-              <input type="checkbox" class="form-check-input checkbox" [checked]="isOfferSelected(sticker)"
-                (click)="$event.stopPropagation()" (change)="toggleOfferSelection(sticker)">
-
-              <img [src]="sticker.imageUrl">
-
-              <ul class="sticker-info">
-                <li class="code">👕 {{ sticker.code }}</li>
-                <li class="name">👤 {{ sticker.name }}</li>
-                <li class="selection">🏳️ {{ sticker.selection }}</li>
-              </ul>
-
-            </div>
-
-          </div>
-          <nav class="mt-4">
-            <ul class="pagination justify-content-center">
-
-              <li class="page-item" [class.disabled]="currentPageNotOwned === 0">
-
-                <button class="page-link" (click)="previousPageNotOwned()">
-
-                  Anterior
-
-                </button>
-
-              </li>
-
-              <li class="page-item disabled">
-
-                <span class="page-link">
-                  Página {{ currentPageNotOwned + 1 }} de {{ totalPagesNotOwned }}
-                </span>
-
-              </li>
-
-              <li class="page-item" [class.disabled]="currentPageNotOwned === totalPagesNotOwned - 1">
-
-                <button class="page-link" (click)="nextPageNotOwned()">
-
-                  Próxima
-
-                </button>
-
-              </li>
-
-            </ul>
-          </nav>
-        </div>
-
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancelar
-        </button>
-
-        <button class="btn btn-success" (click)="submitTrade()">
-          Propor troca
-        </button>
-      </div>
-
-    </div>
-  </div>
-</div>
+<app-trade-modal #tradeModal [wanted]="selectedToTrade" [available]="getMissingStickers()"
+  [selectedOffers]="selectedOffers" [(filter)]="missingFilter" [currentPage]="currentPageNotOwned"
+  [totalPages]="totalPagesNotOwned" (toggleOffer)="toggleOfferSelection($event)" (filterChange)="loadDataNotOwned(0)"
+  (nextPage)="nextPageNotOwned()" (previousPage)="previousPageNotOwned()" (confirm)="submitTrade()">
+</app-trade-modal>

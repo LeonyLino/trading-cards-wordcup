@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Repeated } from './repeated';
+import { TradeModal } from './trade-modal';
 
-describe('Repeated', () => {
-  let component: Repeated;
-  let fixture: ComponentFixture<Repeated>;
+describe('TradeModal', () => {
+  let component: TradeModal;
+  let fixture: ComponentFixture<TradeModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Repeated]
+      imports: [TradeModal]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Repeated);
+    fixture = TestBed.createComponent(TradeModal);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

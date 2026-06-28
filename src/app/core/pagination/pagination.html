@@ -1,0 +1,37 @@
+<nav class="mt-4">
+
+  <ul class="pagination justify-content-center">
+
+    <li class="page-item" [class.disabled]="firstPage">
+
+      <button type="button" class="page-link" (click)="onPrevious()">
+
+        Anterior
+
+      </button>
+
+    </li>
+
+    <li class="page-item disabled">
+
+      <span class="page-link">
+
+        Página {{ page + 1 }} de {{ totalPages }}
+
+      </span>
+
+    </li>
+
+    <li class="page-item" [class.disabled]="lastPage">
+
+      <button type="button" class="page-link" (click)="onNext()">
+
+        Próxima
+
+      </button>
+
+    </li>
+
+  </ul>
+
+</nav>

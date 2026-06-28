@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NotOwned } from './not-owned';
+import { Summary } from './summary';
 
-describe('NotOwned', () => {
-  let component: NotOwned;
-  let fixture: ComponentFixture<NotOwned>;
+describe('Summary', () => {
+  let component: Summary;
+  let fixture: ComponentFixture<Summary>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotOwned]
+      imports: [Summary]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NotOwned);
+    fixture = TestBed.createComponent(Summary);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

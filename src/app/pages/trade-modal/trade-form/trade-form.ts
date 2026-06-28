@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
-import { ExchangeProposalService } from '../../services/exchange-proposal.service';
+import { ExchangeProposalService } from '../../../services/exchange-proposal.service';
 
 @Component({
   selector: 'app-trade-form',
@@ -11,6 +11,7 @@ import { ExchangeProposalService } from '../../services/exchange-proposal.servic
   templateUrl: './trade-form.html',
   styleUrl: './trade-form.scss',
   providers: [provideNgxMask()],
+  standalone: true,
 })
 export class TradeForm {
 
@@ -26,7 +27,12 @@ export class TradeForm {
   ) { }
 
   ngOnInit() {
+
+    console.log('TradeForm iniciado');
+
     const nav = history.state;
+
+    console.log(nav);
 
     this.wanted = nav.wanted || [];
     this.offered = nav.offered || [];

@@ -1,0 +1,92 @@
+.sticker-card {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  border: 2px solid #eee;
+
+  position: relative;
+  cursor: pointer;
+  transition: .2s;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Estados */
+
+.sticker-card.trade {
+  border-color: #ffc107;
+  background: #fff8e1;
+}
+
+.sticker-card.missing {
+  border: 2px dashed #ccc;
+}
+
+.sticker-card.owned {
+  border-color: #28a745;
+}
+
+.sticker-card.selected {
+  border: 2px solid #198754;
+  background: #e9f7ef;
+}
+
+.sticker-card:hover {
+  transform: scale(1.05);
+}
+
+.sticker-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.checkbox {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+.sticker-info {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sticker-info li {
+  font-size: .8rem;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.sticker-info .code {
+  font-weight: 600;
+}
+
+.sticker-info .name {
+  min-height: 38px;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.sticker-info .selection {
+  color: #666;
+  font-size: .75rem;
+}
+
+.sticker-info li span {
+  margin-right: 4px;
+}

@@ -1,0 +1,92 @@
+<div #modal class="modal fade" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    🔁 Propor troca
+
+                </h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="text-center mb-3">
+
+                    <strong>
+
+                        Figurinhas desejadas
+
+                    </strong>
+
+                    <div class="sticker-grid mt-3">
+
+                        <app-sticker-card *ngFor="let sticker of wanted" [sticker]="sticker">
+
+                        </app-sticker-card>
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <strong>
+
+                            Escolha o que oferecer
+
+                        </strong>
+
+                        <app-filter-input [(value)]="filter" (valueChange)="filterChange.emit($event)">
+
+                        </app-filter-input>
+
+                    </div>
+
+                    <div class="sticker-grid mt-3">
+
+                        <app-sticker-card *ngFor="let sticker of available" [sticker]="sticker" variant="trade"
+                            [selectable]="true" [selected]="isSelected(sticker)" (cardClick)="toggleOffer.emit($event)">
+
+                        </app-sticker-card>
+
+                    </div>
+
+                    <app-pagination [page]="currentPage" [totalPages]="totalPages" (next)="nextPage.emit()"
+                        (previous)="previousPage.emit()">
+
+                    </app-pagination>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <button class="btn btn-success" (click)="onConfirm()">
+                    Propor troca
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

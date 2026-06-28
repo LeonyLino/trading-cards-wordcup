@@ -1,0 +1,43 @@
+/* Espaçamento entre as seções */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Área das figurinhas */
+.sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+}
+
+/* Cabeçalho da área de ofertas */
+.offer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Centraliza os cards desejados */
+.wanted-section {
+  text-align: center;
+}
+
+/* Rodapé do modal */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+
+@media (max-width: 576px) {
+
+  .offer-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+}

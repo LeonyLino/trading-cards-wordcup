@@ -1,0 +1,29 @@
+<div class="sticker-card" [class.trade]="variant === 'trade'" [class.missing]="variant === 'missing'"
+    [class.owned]="variant === 'owned'" [class.selected]="selected" (click)="onCardClick()">
+
+    @if (selectable) {
+
+    <input class="form-check-input checkbox" type="checkbox" [checked]="selected" (click)="$event.stopPropagation()"
+        (change)="onCardClick()">
+
+    }
+
+    <img [src]="sticker.imageUrl">
+
+    <ul class="sticker-info">
+
+        <li class="code">
+            👕 {{ sticker.code }}
+        </li>
+
+        <li class="name">
+            👤 {{ sticker.name }}
+        </li>
+
+        <li class="selection">
+            🏳️ {{ sticker.selection }}
+        </li>
+
+    </ul>
+
+</div>

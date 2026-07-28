@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [DecimalPipe],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

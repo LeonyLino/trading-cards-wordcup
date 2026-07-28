@@ -50,6 +50,14 @@
   right: 6px;
 }
 
+.sticker-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .sticker-info {
   list-style: none;
   padding: 0;

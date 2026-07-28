@@ -1,5 +1,11 @@
 <div class="container py-4">
 
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-outline-primary" type="button" (click)="goToLogin()">
+      Ir para Login
+    </button>
+  </div>
+
   <!-- 👤 Header do usuário -->
   <app-header [username]="username" [owned]="totalOwnedStickers" [total]="qtdStickersInAlbum">
   </app-header>
@@ -23,6 +29,9 @@
       <app-sticker-card [sticker]="sticker" variant="trade" [selectable]="true" [selected]="isTradeSelected(sticker)"
         (cardClick)="toggleTradeSelection($event)">
       </app-sticker-card>
+      <div class="text-center mt-1 small text-warning" *ngIf="repeatedCountOf(sticker) > 1">
+        x{{ repeatedCountOf(sticker) }}
+      </div>
 
     </div>
 

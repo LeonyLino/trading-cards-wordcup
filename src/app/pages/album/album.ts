@@ -35,7 +35,7 @@ export class Album implements OnInit {
 
   totalOwnedStickers: number = 0;
 
-  qtdStickersInAlbum: number = 1034;
+  qtdStickersInAlbum: number = 980;
 
 
   selectedToTrade: any[] = [];
@@ -58,6 +58,10 @@ export class Album implements OnInit {
     this.loadDataNotOwned();
     this.loadDataRepeated();
     this.loadCountOwned();
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 
   loadCountOwned() {
@@ -142,8 +146,16 @@ export class Album implements OnInit {
     return (this.totalOwnedStickers / this.qtdStickersInAlbum) * 100;
   }
 
+  repeatedCountOf(sticker: Sticker): number {
+    return sticker.qtd ?? (sticker.repeated ? 1 : 0);
+  }
+
+  isRepeated(sticker: Sticker): boolean {
+    return this.repeatedCountOf(sticker) > 0;
+  }
+
   getTradeStickers() {
-    return this.stickersRepeated.filter(s => s.repeated);
+    return this.stickersRepeated.filter(s => this.isRepeated(s));
   }
 
   getMissingStickers() {

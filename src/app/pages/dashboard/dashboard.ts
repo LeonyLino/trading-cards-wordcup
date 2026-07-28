@@ -48,6 +48,7 @@ export class Dashboard implements OnInit {
 
     if (!sticker.owned) {
       sticker.repeated = false;
+      sticker.qtd = 0;
     }
 
     this.cardService.setOwned(sticker).subscribe({
@@ -57,8 +58,32 @@ export class Dashboard implements OnInit {
     });
   }
 
-  toggleRepeated(sticker: Sticker) {
+  private repeatedCountOf(sticker: Sticker): number {
+    return sticker.qtd ?? (sticker.repeated ? 1 : 0);
+  }
+
+  isRepeated(sticker: Sticker): boolean {
+    return this.repeatedCountOf(sticker) > 0;
+  }
+
+  setRepeatedCount(sticker: Sticker, count: number) {
     if (!sticker.owned) return;
+
+    sticker.qtd = Math.max(0, count);
+    sticker.repeated = sticker.qtd > 0;
+
+    this.cardService.setRepeatedCount(sticker).subscribe({
+      next: () => {
+      },
+      error: err => {
+        console.error('Erro ao atualizar repetida:', err);
+      }
+    });
+  }
+
+  toggleRepeated(sticker: Sticker) {
+    const current = this.repeatedCountOf(sticker);
+    this.setRepeatedCount(sticker, current > 0 ? 0 : 1);
 
     sticker.repeated = !sticker.repeated;
 
@@ -69,12 +94,22 @@ export class Dashboard implements OnInit {
     });
   }
 
+  increaseRepeated(sticker: Sticker) {
+    const current = this.repeatedCountOf(sticker);
+    this.setRepeatedCount(sticker, current + 1);
+  }
+
+  decreaseRepeated(sticker: Sticker) {
+    const current = this.repeatedCountOf(sticker);
+    this.setRepeatedCount(sticker, current - 1);
+  }
+
   filteredStickers(): Sticker[] {
     switch (this.filter) {
       case 'OWNED':
         return this.stickers.filter(s => s.owned);
       case 'REPEATED':
-        return this.stickers.filter(s => s.repeated);
+        return this.stickers.filter(s => this.isRepeated(s));
       case 'MISSING':
         return this.stickers.filter(s => !s.owned);
       default:
@@ -117,7 +152,7 @@ export class Dashboard implements OnInit {
   }
 
   getRepeatedCount() {
-    return this.stickers.filter(s => s.repeated).length;
+    return this.stickers.reduce((sum, sticker) => sum + this.repeatedCountOf(sticker), 0);
   }
 
   getMissingCount() {

@@ -47,9 +47,17 @@ export class CardsService {
     );
   }
 
-  setRepeated(sticker: Sticker): Observable<any> {
+  setRepeatedCount(sticker: Sticker): Observable<any> {
     return this.http.patch(
-      `${this.API_URL}/${sticker.id}/set-repeated`,
+      `${this.API_URL}/${sticker.id}/set-repeated-qtd`,
+      { qtdRepeated: sticker.qtd ?? 0 }
+    );
+  }
+
+  setRepeated(sticker: Sticker): Observable<any> {
+    console.log('setRepeated called for sticker:', sticker);
+    return this.http.patch(
+      `${this.API_URL}/${sticker.id}/set-repeated-false`,
       {}
     );
   }

@@ -58,7 +58,9 @@
 
                     }
 
-                    @if (filter === 'OWNED' && !sticker.repeated) {
+                    @if (filter === 'OWNED') {
+
+                    @if (!isRepeated(sticker)) {
 
                     <button class="btn btn-sm btn-danger" (click)="toggleOwned(sticker)">
 
@@ -74,13 +76,20 @@
 
                     }
 
+                    }
+
                     @if (filter === 'REPEATED') {
 
-                    <button class="btn btn-sm btn-warning" (click)="toggleRepeated(sticker)">
-
-                        ❌
-
-                    </button>
+                    <div class="d-flex gap-1 align-items-center">
+                        @if (sticker.qtd && sticker.qtd > 1) {
+                            <button class="btn btn-sm btn-secondary" (click)="decreaseRepeated(sticker)">-</button>
+                        }
+                        <span class="badge bg-warning">x{{ sticker.qtd ?? (sticker.repeated ? 1 : 0) }}</span>
+                        <button class="btn btn-sm btn-secondary" (click)="increaseRepeated(sticker)">+</button>
+                        @if (sticker.qtd && sticker.qtd === 1) {
+                            <button class="btn btn-sm btn-warning" (click)="toggleRepeated(sticker)">❌</button>
+                        }
+                    </div>
 
                     }
 

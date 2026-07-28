@@ -4,7 +4,7 @@ export interface Sticker {
     name: string;
     team?: string;
     imageUrl: string;
-    qtd: number;
+    qtd?: number;
     selection: string;
     
     owned: boolean;
